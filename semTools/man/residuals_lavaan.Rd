@@ -7,7 +7,7 @@
 residuals_lavaan(fit)
 }
 \arguments{
-\item{fit}{A \code{lavaan} object fit using observed variables only and 
+\item{fit}{A \code{lavaan} object fit using observed variables only and
 \code{meanstructure=TRUE}.}
 }
 \value{
@@ -27,15 +27,14 @@ Petal.Width ~ Sepal.Width + Petal.Length
 '
 iris_fit <- sem(iris_mod, data=iris, meanstructure = TRUE)
 
-residuals_lavaan(iris_fit)                  
+residuals_lavaan(iris_fit)
 
 
+}
+\seealso{
+\code{\link{predict_lavaan}}, \code{\link{residuals_lavaan}}, code{\link[lavaan]{lavOptions}}
 }
 \author{
 Jarrett E.K. Byrnes, University of Massachusetts Boston
 \email{jarrett.byrnes@umb.edu})
 }
-\seealso{
-\code{\link{predict_lavaan}}, \code{\link{residuals_lavaan}}, code{\link[lavaan]{lavOptions}}
-}
-

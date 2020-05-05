@@ -55,16 +55,16 @@ HW.model <- ' visual =~ x1 + x2 + x3
               textual =~ x4 + x5 + x6
               speed =~ x7 + x8 + x9 '
 
-measurementInvariance(HW.model, data=HolzingerSwineford1939, group="school", strict = TRUE)
-measurementInvariance(HW.model, data=HolzingerSwineford1939, group="school", strict = TRUE, std.lv = TRUE)
+measurementInvariance(model=HW.model, data=HolzingerSwineford1939, group="school", strict = TRUE)
+measurementInvariance(model=HW.model, data=HolzingerSwineford1939, group="school", strict = TRUE, std.lv = TRUE)
 
 
 model <- ' f1 =~ u1 + u2 + u3 + u4
            f2 =~ u5 + u6 + u7 + u8'
 
-measurementInvarianceCat(model, data = datCat, group = "g", parameterization="theta", estimator="wlsmv")
+measurementInvarianceCat(model=model, data = datCat, group = "g", parameterization="theta", estimator="wlsmv")
 
-measurementInvarianceCat(model, data = datCat, group = "g", parameterization="theta", estimator="wlsmv", std.lv = TRUE)
+measurementInvarianceCat(model=model, data = datCat, group = "g", parameterization="theta", estimator="wlsmv", std.lv = TRUE)
 
 
 ######### moreFitIndices
@@ -79,7 +79,7 @@ moreFitIndices(fit)
 fit2 <- cfa(HS.model, data=HolzingerSwineford1939, estimator="MLR")
 moreFitIndices(fit2)
 
-library(psych)
+library(psychTools)
 dat <- iqitems
 for(i in 1:ncol(iqitems)) {
 	dat[,i] <- ordered(iqitems[,i])

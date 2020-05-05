@@ -4,7 +4,7 @@
 \alias{predict_lavaan}
 \title{Predict Outcomes from Observed Variable Model SEM}
 \usage{
-predict_lavaan(fit, newdata = NULL, simCI = FALSE, nsims = 100,
+predict_lavaan(fit, newdata = NULL, simCI = FALSE, nsims = 1000,
   ci = 0.95, interval = "confidence")
 }
 \arguments{
@@ -12,7 +12,7 @@ predict_lavaan(fit, newdata = NULL, simCI = FALSE, nsims = 100,
 \code{meanstructure=TRUE}.}
 
 \item{newdata}{An optional data frame of exogenous variables to generate new
-predictions for the entire model. If omitted, the values from the data are 
+predictions for the entire model. If omitted, the values from the data are
 used and returned data is relevant for local relationships only, not
 propogating the effects of exogenous variables through the model.}
 
@@ -24,16 +24,23 @@ is 1000}
 
 \item{ci}{Tolerance/confidence interval level. Defaults to 0.95}
 
-\item{interval}{How does error propogate through the model? Defaults to 
+\item{interval}{How does error propogate through the model? Defaults to
 \code{"confidence"} such that confidence intervals are associated with
 error in coefficients from each individual relationship. To get intervals
-that incorporate residual error in endogenous variables for true prediction, 
+that incorporate residual error in endogenous variables for true prediction,
 use \code{"prediction"}.}
+}
+\value{
+This function returns a \code{data.frame} with the predicted values
+of endogenous variables and confidence intervals (if requested). Column names
+of endogenous variables will match their name in the model. Upper and lower
+confidence intervals will have the variable name appended with either
+\code{\_lower} or \code{\_upper}
 }
 \description{
 Implements prediction from an observed variable SEM (no latent variables
 currently allowed). This function uses the parameter estimates and the
-variance-covariance matrix of coefficients to generate estimates of 
+variance-covariance matrix of coefficients to generate estimates of
 predicted values as well as confidence intervals via simulation.
 }
 \examples{
@@ -55,33 +62,32 @@ pred <- predict_lavaan(iris_fit, newdata=newdata)
 pred2 <- predict_lavaan(iris_fit, newdata=newdata, simCI=TRUE)
 
 #True prediction intervals where error propogates through the model
-pred3 <- predict_lavaan(iris_fit, newdata=newdata, simCI=TRUE, 
+pred3 <- predict_lavaan(iris_fit, newdata=newdata, simCI=TRUE,
                         interval="prediction")
-                        
+
 ###
 #compare differences with a plot
 ###
 plot(newdata$Sepal.Length[1:10], pred2$Petal.Width[1:10], type="n", ylim=c(-1,1))
 
 #CIs
-polygon(c(rev(newdata$Sepal.Length[1:10]), newdata$Sepal.Length[1:10]), 
-        c(rev(pred3$Petal.Width_lower[1:10]),  pred3$Petal.Width_upper[1:10]), 
+polygon(c(rev(newdata$Sepal.Length[1:10]), newdata$Sepal.Length[1:10]),
+        c(rev(pred3$Petal.Width_lower[1:10]),  pred3$Petal.Width_upper[1:10]),
         col = 'lightblue', border = NA)
 
-polygon(c(rev(newdata$Sepal.Length[1:10]), newdata$Sepal.Length[1:10]), 
-        c(rev( pred2$Petal.Width_lower[1:10]),  pred2$Petal.Width_upper[1:10]), 
+polygon(c(rev(newdata$Sepal.Length[1:10]), newdata$Sepal.Length[1:10]),
+        c(rev( pred2$Petal.Width_lower[1:10]),  pred2$Petal.Width_upper[1:10]),
         col = 'grey80', border = NA)
 #the mean fit
 lines(newdata$Sepal.Length[1:10], pred2$Petal.Width[1:10])
-legend(2,1, fill=c("lightblue", "grey80"), legend = c("prediction", "confidence"))                   
+legend(2,1, fill=c("lightblue", "grey80"), legend = c("prediction", "confidence"))
 }
 
+}
+\seealso{
+\code{\link{fitted_lavaan}}, \code{\link{residuals_lavaan}}, code{\link[lavaan]{lavOptions}}
 }
 \author{
 Jarrett E.K. Byrnes, University of Massachusetts Boston
 \email{TJorgensen314@gmail.com})
 }
-\seealso{
-\code{\link{fitted_lavaan}}, \code{\link{residuals_lavaan}}, code{\link[lavaan]{lavOptions}}
-}
-
